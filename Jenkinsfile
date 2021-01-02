@@ -8,7 +8,7 @@ node {
   }
   stage('Quality Gate') {
     timeout(time: 1, unit: 'HOURS') {
-      waitForQualityGate abortPipeline: true
+      waitForQualityGate abortPipeline: false
     }
   }
   stage ('Build') {
