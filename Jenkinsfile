@@ -18,20 +18,18 @@ node {
     }
   }
   stage('Deploy') {
-    step ([$class: 'BapSshPromotionPublisherPlugin']) {
-        sshPublisher(
-            continueOnError: false, failOnError: true,
-            publishers: [
-                sshPublisherDesc(
-                    configName: "appserver2",
-                    verbose: true,
-                    transfers: [
-                      sshTransfer(execCommand: "docker pull parasuramk/nodebank:${env.BUILD_NUMBER}"),
-                        sshTransfer(execCommand: "docker run -p 3000:3000 -d --name nodebank parasuramk//nodebank:${env.BUILD_NUMBER}")
-                    ]
-                )
-            ]
-        )
-    }
+    sshPublisher(
+        continueOnError: false, failOnError: true,
+        publishers: [
+            sshPublisherDesc(
+                configName: "appserver2",
+                verbose: true,
+                transfers: [
+                  sshTransfer(execCommand: "docker pull parasuramk/nodebank:${env.BUILD_NUMBER}"),
+                    sshTransfer(execCommand: "docker run -p 3000:3000 -d --name nodebank parasuramk//nodebank:${env.BUILD_NUMBER}")
+                ]
+            )
+        ]
+    )
   }
 }
