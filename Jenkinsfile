@@ -26,10 +26,16 @@ node {
                 verbose: true,
                 transfers: [
                   sshTransfer(execCommand: "docker pull parasuramk/nodebank:${env.BUILD_NUMBER}"),
-                    sshTransfer(execCommand: "docker run -p 3000:3000 -d --name nodebank parasuramk//nodebank:${env.BUILD_NUMBER}")
+                    sshTransfer(execCommand: "docker run -p 3000:3000 -d --name nodebank parasuramk/nodebank:${env.BUILD_NUMBER}")
                 ]
             )
         ]
     )
+  }
+  stage ('Test') {
+    echo 'Running functional tests ...'
+    sh '''curl -X GET -H 'Content-type: application/json' -H 'Accept: application/json' -H 'Authorization: ' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1'
+'''
+    }
   }
 }
