@@ -6,6 +6,11 @@ node {
 '''
     }
   }
+  stage('Quality Gate') {
+    timeout(time: 1, unit: 'HOURS') {
+      waitForQualityGate abortPipeline: true
+    }
+  }
   stage ('Build') {
     echo 'Building docker image'
     checkout scm
