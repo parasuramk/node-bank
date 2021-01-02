@@ -25,6 +25,8 @@ node {
                 configName: "appserver2",
                 verbose: true,
                 transfers: [
+                  sshTransfer(execCommand: "docker stop nodebank"),
+                  sshTransfer(execCommand: "docker rm nodebank"),
                   sshTransfer(execCommand: "docker pull parasuramk/nodebank:${env.BUILD_NUMBER}"),
                     sshTransfer(execCommand: "docker run -p 3000:3000 -d --name nodebank parasuramk/nodebank:${env.BUILD_NUMBER}")
                 ]
