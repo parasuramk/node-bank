@@ -34,8 +34,7 @@ node {
   }
   stage ('Test') {
     echo 'Running functional tests ...'
-    sh '''curl -X GET -H 'Content-type: application/json' -H 'Accept: application/json' -H 'Authorization: ' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1'
-'''
+    sh "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: \' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1"
     }
   }
 }
