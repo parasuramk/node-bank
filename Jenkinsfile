@@ -18,7 +18,7 @@ node {
     }
   }
   stage('Deploy') {
-    steps([$class: 'BapSshPromotionPublisherPlugin']) {
+    step ([$class: 'BapSshPromotionPublisherPlugin']) {
         sshPublisher(
             continueOnError: false, failOnError: true,
             publishers: [
