@@ -20,15 +20,6 @@ pipeline {
     stage ('Build') {
       steps {
         echo 'Build ...'
-        agent { dockerfile true }
-        stages {
-          stage ('Build Docker image...') {
-            echo 'building docker image...'
-          }
-          stage ('Deploy to QA environment') {
-            echo 'deploying docker image in QA environment...'
-          }
-        }
       }
     }
     stage ('Test') {
