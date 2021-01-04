@@ -6,6 +6,15 @@ node {
 '''
     }
   }
+  stage ('SonarQube Quality Gate') {
+    echo 'Quality Gate ...'
+    timeout(time: 30, unit: 'MINUTES') { 
+      def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+      if (qg.status != 'OK') {
+          error "Pipeline aborted due to quality gate failure: ${qg.status}"
+      }
+    }
+  }
   stage ('Build') {
     echo 'Building docker image'
     checkout scm
@@ -45,32 +54,38 @@ node {
       def jsonOutput = readJSON text: rValue
       def schedId = jsonOutput.data.schdlId
       
-      timeout(time: 10, unit: 'SECONDS') {
-          waitUntil {
-            script {
-              rValue = sh (
-                script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
-                returnStdout: true
-              )
+      timeout(time: 10, unit: 'MINUTES') {
+        waitUntil {
+          script {
+            rValue = sh (
+              script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
+              returnStdout: true
+            )
 
-              jsonOutput = readJSON text: rValue
-              echo jsonOutput.data.statusMsg
-              if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
-              {
-                echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
-                if (jsonOutput.data.summary.FAILED == 0)
-                  return true
-                else {
-                  return false
-                  echo 'Test did not complete.'
-                  sh "exit 1"
-                }
+            jsonOutput = readJSON text: rValue
+
+            if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
+            {
+              echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
+              if (jsonOutput.data.summary.FAILED == 0)
+                return true
+              else {
+                return false
               }
-              return false
-              echo 'Test did not complete.'
-              sh "exit 1"
             }
+            return false
           }
+        }
+        if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
+        {
+          echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
+          if (jsonOutput.data.summary.FAILED == 0) {
+            //do nothing
+          }
+          else {
+            sh "exit 1"
+          }
+        }
       }
     }
   }
