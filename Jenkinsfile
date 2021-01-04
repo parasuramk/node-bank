@@ -47,12 +47,12 @@ node {
       echo schedId
       
       waitUntil(initialRecurrencePeriod: 15000) {
-        def rValue = sh (
+        rValue = sh (
           script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}',
           returnStdout: true
         )
         
-        def jsonObj = readJSON text: rValue
+        jsonObj = readJSON text: rValue
 
         if (jsonObj['statusMsg'] == 'COMPLETED')  // this is a comparison.  It returns true
         {
