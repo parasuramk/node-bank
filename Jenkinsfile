@@ -44,20 +44,20 @@ node {
       echo rValue
       def jsonOutput = readJSON text: rValue
       def schedId = jsonOutput.data.schdlId
-      echo 'Schedule ID: ${jsonOutput.data.schdlId}'
+      echo "Schedule ID: ${schedId}"
       echo schedId
       
       waitUntil(initialRecurrencePeriod: 15000) {
         rValue = sh (
-          script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}',
+          script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
           returnStdout: true
         )
         
-        jsonObj = readJSON text: rValue
+        jsonOutput = readJSON text: rValue
 
-        if (jsonObj.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
+        if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
         {
-          echo jsonObj.summary
+          echo jsonOutput.summary
           return true
         }
       }
