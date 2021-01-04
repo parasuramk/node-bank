@@ -42,8 +42,9 @@ node {
         returnStdout: true
         )
       echo rValue
-      def jsonObj = readJSON text: rValue
-      def schedId = jsonObj['data.schdlId']
+      def jsonOutput = readJSON text: rValue
+      def schedId = jsonOutput.data.schdlId
+      echo 'Schedule ID: ${jsonOutput.data.schdlId}'
       echo schedId
       
       waitUntil(initialRecurrencePeriod: 15000) {
@@ -54,9 +55,9 @@ node {
         
         jsonObj = readJSON text: rValue
 
-        if (jsonObj['data.statusMsg'] == 'COMPLETED')  // this is a comparison.  It returns true
+        if (jsonObj.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
         {
-          echo jsonObj['summary']
+          echo jsonObj.summary
           return true
         }
       }
