@@ -37,7 +37,11 @@ node {
   stage ('Test') {
     echo 'Running functional tests ...'
     catchError (stageResult: 'FAILURE') {
-      sh 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: \' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1'
+      def rValue = sh (
+        script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1',
+        returnStdout: true
+        )
+      println rValue
     }
   }
 }
