@@ -57,7 +57,7 @@ node {
               echo jsonOutput.data.statusMsg
               if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
               {
-                echo 'Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}
+                echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
                 if (jsonOutput.data.summary.FAILED == 0)
                   return true
                 else {
