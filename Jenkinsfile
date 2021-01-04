@@ -54,7 +54,7 @@ node {
         
         def jsonObj = readJSON text: rValue
 
-        if jsonObj['statusMsg'] == 'COMPLETED'  // this is a comparison.  It returns true
+        if (jsonObj['statusMsg'] == 'COMPLETED')  // this is a comparison.  It returns true
         {
           echo jsonObj['summary']
           return true
