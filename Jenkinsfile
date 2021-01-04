@@ -2,14 +2,14 @@ node {
   stage ('SonarQube Code Analysis') {
     echo 'Code analysis ...'
     withSonarQubeEnv('sonarqube') {
-      sh '''/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner -Dsonar.host.url=http://34.126.117.238:9000 -Dsonar.login=admin -Dsonar.password=Passw0rd -Dsonar.projectKey=nodebank -Dsonar.source=.
+      sh '''/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner -Dsonar.host.url=http://34.126.117.238:9000 -Dsonar.login=70b003e24882bf6212546b97ecf26d4771d03548 -Dsonar.projectKey=NodeBank -Dsonar.source=.
 '''
     }
   }
   stage ('SonarQube Quality Gate') {
     echo 'Quality Gate ...'
     timeout(time: 30, unit: 'MINUTES') { 
-      def qg = waitForQualityGate(credentialsId: 'sonar') // Reuse taskId previously collected by withSonarQubeEnv
+      def qg = waitForQualityGate(credentialsId: 'SonarQube') // Reuse taskId previously collected by withSonarQubeEnv
       if (qg.status != 'OK') {
           error "Pipeline aborted due to quality gate failure: ${qg.status}"
       }
