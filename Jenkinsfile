@@ -41,7 +41,25 @@ node {
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1',
         returnStdout: true
         )
-      println rValue
+      echo rValue
+      def jsonObj = readJSON text: rValue
+      def schedId = jsonObj['schdlId']
+      echo schedId
+      
+      waitUntil(initialRecurrencePeriod: 15000) {
+        def rValue = sh (
+          script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}',
+          returnStdout: true
+        )
+        
+        def jsonObj = readJSON text: rValue
+
+        if jsonObj['statusMsg'] == 'COMPLETED'  // this is a comparison.  It returns true
+        {
+          echo jsonObj['summary']
+          return true
+        }
+      }
     }
   }
 }
