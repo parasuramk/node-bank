@@ -45,7 +45,7 @@ node {
       def jsonOutput = readJSON text: rValue
       def schedId = jsonOutput.data.schdlId
       
-      timeout(time: 5, unit: 'MINUTES') {
+      timeout(time: 10, unit: 'SECONDS') {
           waitUntil {
             script {
               rValue = sh (
@@ -57,10 +57,18 @@ node {
               echo jsonOutput.data.statusMsg
               if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
               {
-                echo jsonOutput.summary
-                return true
+                echo 'Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}
+                if (jsonOutput.data.summary.FAILED == 0)
+                  return true
+                else {
+                  return false
+                  echo 'Test did not complete.'
+                  sh "exit 1"
+                }
               }
               return false
+              echo 'Test did not complete.'
+              sh "exit 1"
             }
           }
       }
