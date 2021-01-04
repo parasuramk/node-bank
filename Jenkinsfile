@@ -9,7 +9,7 @@ node {
   stage ('SonarQube Quality Gate') {
     echo 'Quality Gate ...'
     timeout(time: 30, unit: 'MINUTES') { 
-      def qg = waitForQualityGate(credentialsId: 'sonarlogin') // Reuse taskId previously collected by withSonarQubeEnv
+      def qg = waitForQualityGate(abortPipeline: true, credentialsId: 'sonarlogin') // Reuse taskId previously collected by withSonarQubeEnv
       if (qg.status != 'OK') {
           error "Pipeline aborted due to quality gate failure: ${qg.status}"
       }
@@ -66,12 +66,7 @@ node {
 
             if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
-              echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
-              if (jsonOutput.data.summary.FAILED == 0)
-                return true
-              else {
-                return false
-              }
+              return true
             }
             return false
           }
@@ -79,7 +74,7 @@ node {
         if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
         {
           echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.FAILED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
-          if (jsonOutput.data.summary.FAILED == 0) {
+          if (jsonOutput.data.summary.PASSED == jsonOutput.data.summary.TOTAL) {
             //do nothing
           }
           else {
