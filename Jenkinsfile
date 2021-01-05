@@ -135,7 +135,7 @@ node {
   stage ('Performance Tests') {
     echo 'Running performance tests ...'
     catchError (stageResult: 'FAILURE') {
-      sh 'jmeter -n -t ${env.WORKSPACE}/Jmeter_register.gmx'
+      sh "jmeter -n -t ${env.WORKSPACE}/Jmeter_register.gmx"
     }
   }
 }
