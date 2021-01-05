@@ -47,47 +47,47 @@ node {
   stage ('Build Verification') {
     echo 'Running sanity tests ...'
     catchError (stageResult: 'FAILURE') {
-      def retValue = sh (
-        script: "sh 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ee1614590e6225f36192",
+      def rValue = sh (
+        script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ee1614590e6225f36192',
         returnStdout: true
         )
 
-      def jsonOutput1 = readJSON text: retValue
-      def schedId1 = jsonOutput.data.schdlId
+      def jsonOutput = readJSON text: rValue
+      def schedId = jsonOutput.data.schdlId
       
       timeout(time: 10, unit: 'MINUTES') {
         waitUntil {
           script {
-            retValue = sh (
-              script: "curl -X GET -H 'Content-type: application/json' -H 'Accept: application/json' -H 'Authorization: y78x1uG7kfgr00c2' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
+            rValue = sh (
+              script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
               returnStdout: true
             )
 
-            jsonOutput1 = readJSON text: retValue
-            echo jsonOutput1
+            jsonOutput = readJSON text: rValue
+            echo jsonOutput
             
-            if (jsonOutput1.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
+            if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
               return true
             }
             return false
           }
         }
-        
-        if (jsonOutput1.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
+        if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
         {
-          echo "Total tests executed: ${jsonOutput1.data.summary.TOTAL}; Passed: ${jsonOutput1.data.summary.PASSED}; Failed: ${jsonOutput1.data.summary.FAILED}; Skipped: ${jsonOutput1.data.summary.SKIPPED}"
-          if (jsonOutput1.data.summary.PASSED == jsonOutput1.data.summary.TOTAL) {
+          echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.PASSED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
+          if (jsonOutput.data.summary.PASSED == jsonOutput.data.summary.TOTAL) {
             //do nothing
-            echo 'All tests passed'
+            echo 'Sanity tests passed'
           }
           else {
             sh "exit 1"
           }
         }
       }
-    }
+    }    
   }
+  
   stage ('Functional Tests') {
     echo 'Running functional tests ...'
     catchError (stageResult: 'FAILURE') {
@@ -122,7 +122,7 @@ node {
           echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.PASSED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
           if (jsonOutput.data.summary.PASSED == jsonOutput.data.summary.TOTAL) {
             //do nothing
-            echo 'All tests passed'
+            echo 'Functional tests passed'
           }
           else {
             sh "exit 1"
