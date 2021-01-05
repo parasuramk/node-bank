@@ -64,7 +64,7 @@ node {
             )
 
             jsonOutput = readJSON text: rValue
-            echo jsonOutput
+            echo jsonOutput.data.statusMsg
             
             if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
@@ -108,7 +108,7 @@ node {
             )
 
             jsonOutput = readJSON text: rValue
-            echo jsonOutput
+            echo jsonOutput.data.statusMsg
             
             if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
