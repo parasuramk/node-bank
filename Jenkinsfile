@@ -91,23 +91,23 @@ node {
   stage ('Functional Tests') {
     echo 'Running functional tests ...'
     catchError (stageResult: 'FAILURE') {
-      def rValue = sh (
+      def retValue = sh (
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1',
         returnStdout: true
         )
 
-      def jsonOutput = readJSON text: rValue
+      def jsonOutput = readJSON text: retValue
       def schedId = jsonOutput.data.schdlId
       
       timeout(time: 10, unit: 'MINUTES') {
         waitUntil {
           script {
-            rValue = sh (
+            retValue = sh (
               script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
               returnStdout: true
             )
 
-            jsonOutput = readJSON text: rValue
+            jsonOutput = readJSON text: retValue
             echo jsonOutput.data.statusMsg
             
             if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
