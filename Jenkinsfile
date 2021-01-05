@@ -64,7 +64,7 @@ node {
             )
 
             jsonOutput1 = readJSON text: retValue
-            echo jsonOutput1
+            echo "${jsonOutput1}"
             
             if (jsonOutput1.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
@@ -73,10 +73,10 @@ node {
             return false
           }
         }
-        if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
+        if (jsonOutput1.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
         {
-          echo "Total tests executed: ${jsonOutput.data.summary.TOTAL}; Passed: ${jsonOutput.data.summary.PASSED}; Failed: ${jsonOutput.data.summary.FAILED}; Skipped: ${jsonOutput.data.summary.SKIPPED}"
-          if (jsonOutput.data.summary.PASSED == jsonOutput.data.summary.TOTAL) {
+          echo "Total tests executed: ${jsonOutput1.data.summary.TOTAL}; Passed: ${jsonOutput1.data.summary.PASSED}; Failed: ${jsonOutput1.data.summary.FAILED}; Skipped: ${jsonOutput1.data.summary.SKIPPED}"
+          if (jsonOutput1.data.summary.PASSED == jsonOutput.data.summary.TOTAL) {
             //do nothing
             echo 'All tests passed'
           }
