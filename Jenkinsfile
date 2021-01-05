@@ -25,8 +25,6 @@ node {
         /* Push the container to the custom Registry */
         customImage.push()
     }
-    def prevBuild = env.BUILD_NUMBER - 1
-    sh "docker rmi -f parasuramk/nodebank:${prevBuild}"
   }
   stage('Deploy') {
     sshPublisher(
