@@ -51,7 +51,7 @@ node {
         script: "sh 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ee1614590e6225f36192",
         returnStdout: true
         )
-      echo retValue
+
       def jsonOutput1 = readJSON text: retValue
       def schedId1 = jsonOutput.data.schdlId
       
@@ -64,7 +64,7 @@ node {
             )
 
             jsonOutput1 = readJSON text: retValue
-            echo "${jsonOutput1}"
+            echo jsonOutput1
             
             if (jsonOutput1.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
@@ -73,10 +73,11 @@ node {
             return false
           }
         }
+        
         if (jsonOutput1.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
         {
           echo "Total tests executed: ${jsonOutput1.data.summary.TOTAL}; Passed: ${jsonOutput1.data.summary.PASSED}; Failed: ${jsonOutput1.data.summary.FAILED}; Skipped: ${jsonOutput1.data.summary.SKIPPED}"
-          if (jsonOutput1.data.summary.PASSED == jsonOutput.data.summary.TOTAL) {
+          if (jsonOutput1.data.summary.PASSED == jsonOutput1.data.summary.TOTAL) {
             //do nothing
             echo 'All tests passed'
           }
@@ -94,7 +95,7 @@ node {
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1',
         returnStdout: true
         )
-      echo rValue
+
       def jsonOutput = readJSON text: rValue
       def schedId = jsonOutput.data.schdlId
       
