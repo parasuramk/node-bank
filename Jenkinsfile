@@ -92,7 +92,7 @@ node {
     echo 'Running functional tests ...'
     catchError (stageResult: 'FAILURE') {
       def retValue = sh (
-        script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff032d7a8ff92f3491723f1',
+        script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ec691d101261ffddd52d',
         returnStdout: true
         )
 
