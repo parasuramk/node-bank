@@ -59,7 +59,7 @@ node {
           script {
             rValue = sh (
               script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
-              returnStdout: false
+              returnStdout: true
             )
 
             jsonOutput = readJSON text: rValue
@@ -103,7 +103,7 @@ node {
           script {
             retValue = sh (
               script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
-              returnStdout: false
+              returnStdout: true
             )
 
             jsonOutput = readJSON text: retValue
