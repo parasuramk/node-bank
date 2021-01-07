@@ -82,7 +82,7 @@ node {
           else {
             echo 'Sanity tests failed'
             currentBuild.result = 'FAILURE'
-            return false
+            sh 'exit -1'
           }
         }
       }    
@@ -126,7 +126,7 @@ node {
           }
           else {
             currentBuild.result = 'FAILURE'
-            return
+            sh 'exit -1'
           }
         }
       }
