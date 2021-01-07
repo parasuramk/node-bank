@@ -59,11 +59,10 @@ node {
           script {
             rValue = sh (
               script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
-              returnStdout: true
+              returnStdout: false
             )
 
             jsonOutput = readJSON text: rValue
-            echo jsonOutput.data.statusMsg
             
             if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
@@ -104,11 +103,10 @@ node {
           script {
             retValue = sh (
               script: "curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/status/${schedId}",
-              returnStdout: true
+              returnStdout: false
             )
 
             jsonOutput = readJSON text: retValue
-            echo jsonOutput.data.statusMsg
             
             if (jsonOutput.data.statusMsg == 'COMPLETED')  // this is a comparison.  It returns true
             {
@@ -125,6 +123,7 @@ node {
             echo 'Functional tests passed'
           }
           else {
+            echo 'Functional tests failed'
             currentBuild.result = 'FAILURE'
             sh 'exit -1'
           }
