@@ -46,7 +46,7 @@ node {
   
   stage ('Build Verification') {
     echo 'Running sanity tests ...'
-    catchError (stageResult: 'FAILURE', buildResult: 'ABORTED') {
+    catchError (stageResult: 'FAILURE', buildResult: 'FAILURE') {
       def rValue = sh (
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ee1614590e6225f36192',
         returnStdout: true
@@ -81,8 +81,8 @@ node {
             echo 'Sanity tests passed'
           }
           else {
-            currentBuild.result = 'SUCCESS'
-            sh "exit 1"
+            currentBuild.result = 'FAILURE'
+            return
           }
         }
       }
@@ -126,7 +126,8 @@ node {
             echo 'Functional tests passed'
           }
           else {
-            sh "exit 1"
+            currentBuild.result = 'FAILURE'
+            return
           }
         }
       }
