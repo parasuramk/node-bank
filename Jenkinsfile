@@ -46,7 +46,7 @@ node {
   
   stage ('Build Verification') {
     echo 'Running sanity tests ...'
-    catchError (stageResult: 'FAILURE') {
+    catchError (stageResult: 'FAILURE', buildResult: 'FAILURE') {
       def rValue = sh (
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ee1614590e6225f36192',
         returnStdout: true
@@ -81,6 +81,7 @@ node {
             echo 'Sanity tests passed'
           }
           else {
+            currentBuild.result = 'SUCCESS'
             sh "exit 1"
           }
         }
@@ -90,7 +91,7 @@ node {
   
   stage ('Functional Tests') {
     echo 'Running functional tests ...'
-    catchError (stageResult: 'FAILURE') {
+    catchError (stageResult: 'FAILURE', buildResult: 'FAILURE') {
       def retValue = sh (
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ec691d101261ffddd52d',
         returnStdout: true
@@ -134,7 +135,7 @@ node {
   
   stage ('Performance Tests') {
     echo 'Running performance tests ...'
-    catchError (stageResult: 'FAILURE') {
+    catchError (stageResult: 'FAILURE', buildResult: 'FAILURE') {
       sh "/home/rammkp/apache-jmeter-5.4/bin/jmeter -n -t ${env.WORKSPACE}/Jmeter_register.jmx"
     }
   }
