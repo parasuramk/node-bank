@@ -82,7 +82,7 @@ node {
           else {
             echo 'Sanity tests failed'
             currentBuild.result = 'FAILURE'
-            return
+            return false
           }
         }
       }    
