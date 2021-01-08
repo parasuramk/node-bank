@@ -2,8 +2,7 @@ node {
   stage ('Code Analysis') {
     echo 'Code analysis ...'
     withSonarQubeEnv('sonarqube') {
-      sh "${env.JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner -Dsonar.host.url=http://34.126.117.238:9000 -Dsonar.login=70b003e24882bf6212546b97ecf26d4771d03548 -Dsonar.projectKey=NodeBank -Dsonar.source=.
-"
+      sh "${env.JENKINS_HOME}/tools/hudson.plugins.sonar.SonarRunnerInstallation/sonarqube/bin/sonar-scanner -Dsonar.host.url=http://34.126.117.238:9000 -Dsonar.login=70b003e24882bf6212546b97ecf26d4771d03548 -Dsonar.projectKey=NodeBank -Dsonar.source=."
     }
     echo 'Quality Gate ...'
     timeout(time: 30, unit: 'MINUTES') { 
