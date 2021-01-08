@@ -4,8 +4,6 @@
 
 A simple banking application with node, express and mongo.
 
-Making changes to trigger the build
-
 ![jeffreynerona|nodebank](https://raw.githubusercontent.com/jeffreynerona/node-bank/master/screenshot/nodebank.png)
 
 # Features
@@ -50,4 +48,3 @@ $ npm start
 
 /api/user/(card number)
 
-Some change
