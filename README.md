@@ -1,7 +1,5 @@
 # Node Bank
 
-[![status|done](http://jeffreynerona.com/badges/status-done.svg)](http://jeffreynerona.com/projects) [![type|practice-project](http://jeffreynerona.com/badges/type-practiceproject.svg)](http://jeffreynerona.com/projects/) [![language|javascript](http://jeffreynerona.com/badges/language-javascript.svg)](http://jeffreynerona.com/projects/javascript)  [![type|practice-project](http://jeffreynerona.com/badges/technology-node+express+mongo.svg)](http://jeffreynerona.com/projects/)
-
 A simple banking application with node, express and mongo.
 
 Making changes to trigger the build
