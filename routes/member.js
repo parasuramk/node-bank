@@ -11,9 +11,12 @@ router.get('/', function(req, res, next) {
     var query = User.findOne({ '_id' : uid });
     query.select('name email money card image_url');
     query.exec(function (err, user) {
-    if (err) return handleError(err);
-      userdata=user;
-      res.render('member', { userdata: user, title: 'member', action:'MAIN' });
+    if (err) {
+      return handleError(err);
+    }
+      
+    userdata=user;
+    res.render('member', { userdata: user, title: 'member', action:'MAIN' });
     });
   } else {
     res.redirect('/login');
@@ -45,8 +48,10 @@ router.post('/transact', function(req, res, next) {
       { $set: { 'money' : newAmount } }
       );
       deposit.exec(function (err, result) {
-      if (err) return handleError(err);
-        console.log(result);
+      if (err) {
+        return handleError(err);
+      }
+      console.log(result);
       });
     };
     if(action=='WITHDRAW'){
@@ -57,8 +62,10 @@ router.post('/transact', function(req, res, next) {
       { $set: { 'money' : newAmount } }
       );
       withdraw.exec(function (err, result) {
-      if (err) return handleError(err);
-        console.log(result);
+      if (err) {
+        return handleError(err);
+      }
+      console.log(result);
       });
     };
     res.redirect('/member');
