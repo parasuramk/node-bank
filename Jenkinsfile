@@ -81,7 +81,7 @@ node {
           else {
             echo 'Sanity tests failed'
             currentBuild.result = 'FAILURE'
-            sh 'exit -1'
+            sh 'exit 1'
           }
         }
       }    
@@ -89,7 +89,6 @@ node {
   
   stage ('Functional Tests') {
     echo 'Running functional tests ...'
-    catchError (stageResult: 'FAILURE', buildResult: 'FAILURE') {
       def retValue = sh (
         script: 'curl -X GET -H \'Content-type: application/json\' -H \'Accept: application/json\' -H \'Authorization: y78x1uG7kfgr00c2\' https://iqe.maveric-systems.com/rapidtest/api/execution/runid/5ff3ec691d101261ffddd52d',
         returnStdout: true
@@ -125,11 +124,10 @@ node {
           else {
             echo 'Functional tests failed'
             currentBuild.result = 'FAILURE'
-            sh 'exit -1'
+            sh 'exit 1'
           }
         }
       }
-    }
   }
   
   stage ('Performance Tests') {
