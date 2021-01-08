@@ -16,7 +16,7 @@ node {
 
   stage ('Build') {
     echo 'Building docker image'
-    git '...'
+    checkout scm
     docker.withRegistry('https://registry.hub.docker.com', '9abfe119-8a8d-41a6-b888-1093b34aa3f6') {
 
         def customImage = docker.build("parasuramk/nodebank:${env.BUILD_NUMBER}")
