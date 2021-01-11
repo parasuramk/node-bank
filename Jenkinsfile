@@ -1,5 +1,6 @@
 node {
-  stage ('Checkout Code...') {
+  stage ('Checkout Code') {
+    echo 'Checking out code from git...'
     checkout scm
   }
   
