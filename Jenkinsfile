@@ -1,4 +1,8 @@
 node {
+  stage ('Checkout Code...') {
+    checkout scm
+  }
+  
   stage ('Code Analysis') {
     echo 'Code analysis ...'
     withSonarQubeEnv('sonarqube') {
